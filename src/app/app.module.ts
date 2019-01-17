@@ -15,6 +15,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material';
+import { HeaderComponent } from './navigation/header/header.component';
+import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +27,9 @@ import {MatNativeDateModule} from '@angular/material';
         CurrentTrainingComponent,
         NewTrainingComponent,
         PastTrainingComponent,
-        WelcomeComponent
+        WelcomeComponent,
+        HeaderComponent,
+        SidenavComponent
     ],
     imports: [
         BrowserModule,
