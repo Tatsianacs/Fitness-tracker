@@ -17,6 +17,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
+import {StopTrainingComponent} from './training/current-training/stop-training.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { SidenavComponent } from './navigation/sidenav/sidenav.component';
         PastTrainingComponent,
         WelcomeComponent,
         HeaderComponent,
-        SidenavComponent
+        SidenavComponent,
+        StopTrainingComponent
     ],
     imports: [
         BrowserModule,
@@ -41,7 +43,8 @@ import { SidenavComponent } from './navigation/sidenav/sidenav.component';
         ReactiveFormsModule
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [StopTrainingComponent]
 })
 export class AppModule {
 }
