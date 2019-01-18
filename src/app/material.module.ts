@@ -12,7 +12,7 @@ import {
     MatOptionModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatSidenavModule,
+    MatSidenavModule, MatSortModule, MatTableModule,
     MatTabsModule,
     MatToolbarModule
 } from '@angular/material';
@@ -20,8 +20,9 @@ import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
-    imports: [MatDialogModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatCardModule, MatTabsModule, MatListModule, MatToolbarModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule],
-    exports: [MatDialogModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatCardModule, MatTabsModule, MatListModule, MatToolbarModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule]
+    imports: [MatSortModule, MatTableModule, MatDialogModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatCardModule, MatTabsModule, MatListModule, MatToolbarModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule],
+    exports: [MatSortModule, MatTableModule, MatDialogModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatCardModule, MatTabsModule, MatListModule, MatToolbarModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule]
 })
 export class MaterialModule {
+    private static MatFilterModule: any;
 }

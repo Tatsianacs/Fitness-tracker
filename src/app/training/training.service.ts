@@ -32,4 +32,8 @@ export class TrainingService {
         this.runningExercise = null;
         this.trainingChanged.next(null);
     }
+
+    getExercises() {
+        return this.exercises.slice();
+    }
 }
