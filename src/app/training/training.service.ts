@@ -26,17 +26,20 @@ export class TrainingService {
     }
 
     completeExcerise() {
-        this.exercises.push({...this.runningExercise, date: new Date(), state: 'completed'});
+        this.addDataToDatabase({...this.runningExercise, date: new Date(), state: 'completed'});
         this.runningExercise = null;
         this.trainingChanged.next(null);
     }
 
     cancelExcercise(progress: number) {
-        this.exercises.push({...this.runningExercise, date: new Date(), state: 'cancelled', duration: this.runningExercise.duration * (progress / 100), calories: this.runningExercise.calories * (progress / 100) });
+       this.addDataToDatabase({...this.runningExercise, date: new Date(), state: 'cancelled', duration: this.runningExercise.duration * (progress / 100), calories: this.runningExercise.calories * (progress / 100) });
         this.runningExercise = null;
         this.trainingChanged.next(null);
     }
 
+    getExercises() {
+        return this.exercises.slice();
+    }
     fetchExercises() {
         this.db.collection('availableExcercises').snapshotChanges()  // with shapshot we get both id and values (via payload)
             .pipe(map(docArray => { // allow us to get server data in format we expect
@@ -50,8 +53,12 @@ export class TrainingService {
                 });
             }))
             .subscribe((availableExercises: Training[]) => {
-                this.exercises = availableExercises;
-                this.trainingsChanged.next([...this.exercises]);  // ... as a copy of array
+                this.availableExercises = availableExercises;
+                this.trainingsChanged.next([...this.availableExercises]);  // ... as a copy of array
         });
+    }
+
+    private addDataToDatabase(exercise: Training) {
+        this.db.collection('finishedExercises').add(exercise);
     }
 }
