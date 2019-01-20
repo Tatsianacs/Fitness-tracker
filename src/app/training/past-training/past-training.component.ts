@@ -19,7 +19,8 @@ export class PastTrainingComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.dataSource.data = this.trainingService.getExercises();
+        this.dataSource.data = [];
+        // this.trainingService.fetchExercises();
     }
 
     ngAfterViewInit() {  // we cannot do in Init because of not ready data
