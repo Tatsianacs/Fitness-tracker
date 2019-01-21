@@ -19,6 +19,7 @@ export class TrainingService {
     constructor(private db: AngularFirestore) {}
 
     startExercise(selectedId: string) {
+        this.db.doc('availableExcercises/' + selectedId).update({lastSelected: new Date()});
         this.runningExercise = this.availableExercises.find(ex => ex.id === selectedId);
         this.trainingChanged.next({...this.runningExercise});  // return NOT the same object but copy
     }
