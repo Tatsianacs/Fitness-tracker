@@ -1,5 +1,5 @@
 import {Training} from './training.model';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
@@ -15,6 +15,7 @@ export class TrainingService {
     trainingChanged = new Subject<Training>();
     trainingsChanged = new Subject<Training[]>();
     finishedExercisesCHanged = new Subject<Training[]>();
+    private fbSubs: Subscription[] = [];
 
     constructor(private db: AngularFirestore) {}
 
@@ -40,15 +41,19 @@ export class TrainingService {
     }
 
     fetchCompletedOrCancelledExercises() {
-        this.db.collection('finishedExercises').valueChanges()
+        this.fbSubs.push(this.db.collection('finishedExercises').valueChanges()
             .subscribe((exercises: Training[]) => {
                 this.finishedExercisesCHanged.next(exercises);
-            });
+            }
+            // , error => {
+            //     console.log(error);
+            // } error handler here if needed
+            ));
     }
 
 
     fetchExercises() {
-        this.db.collection('availableExcercises').snapshotChanges()  // with shapshot we get both id and values (via payload)
+        this.fbSubs.push(this.db.collection('availableExcercises').snapshotChanges()  // with shapshot we get both id and values (via payload)
             .pipe(map(docArray => { // allow us to get server data in format we expect
                 return docArray.map(doc => {
                     return {
@@ -62,7 +67,15 @@ export class TrainingService {
             .subscribe((availableExercises: Training[]) => {
                 this.availableExercises = availableExercises;
                 this.trainingsChanged.next([...this.availableExercises]);  // ... as a copy of array
-        });
+        }
+        // , error => {
+        //         console.log(error);
+        //     }
+        ));
+    }
+
+    cancelSubscriptions() {
+        this.fbSubs.forEach(sub => sub.unsubscribe());
     }
 
     private addDataToDatabase(exercise: Training) {
