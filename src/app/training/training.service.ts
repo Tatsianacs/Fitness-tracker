@@ -9,11 +9,12 @@ export class TrainingService {
     availableExercises: Training[] = [
 
     ];
-    private exercises: Training[] = [];
+    // private exercises: Training[] = [];  // finished exercises
 
     private runningExercise: Training;
     trainingChanged = new Subject<Training>();
     trainingsChanged = new Subject<Training[]>();
+    finishedExercisesCHanged = new Subject<Training[]>();
 
     constructor(private db: AngularFirestore) {}
 
@@ -37,18 +38,23 @@ export class TrainingService {
         this.trainingChanged.next(null);
     }
 
-    getExercises() {
-        return this.exercises.slice();
+    fetchCompletedOrCancelledExercises() {
+        this.db.collection('finishedExercises').valueChanges()
+            .subscribe((exercises: Training[]) => {
+                this.finishedExercisesCHanged.next(exercises);
+            });
     }
+
+
     fetchExercises() {
         this.db.collection('availableExcercises').snapshotChanges()  // with shapshot we get both id and values (via payload)
             .pipe(map(docArray => { // allow us to get server data in format we expect
                 return docArray.map(doc => {
                     return {
                         id: doc.payload.doc.id,
-                        name: doc.payload.doc.data().name,
-                        duration: doc.payload.doc.data().duration,
-                        calories: doc.payload.doc.data().calories
+                        name: doc.payload.doc.data()['name'],
+                        duration: doc.payload.doc.data()['duration'],
+                        calories: doc.payload.doc.data()['calories']
                     };
                 });
             }))
