@@ -9,3 +9,8 @@ html, body {
 body {
   margin: 0;
 }
+
+.background-red{
+  background-color: red;
+  color: white;
+}
