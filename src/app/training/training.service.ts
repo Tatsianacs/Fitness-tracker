@@ -65,15 +65,18 @@ export class TrainingService {
                         calories: doc.payload.doc.data()['calories']
                     };
                 });
+
             }))
             .subscribe((availableExercises: Training[]) => {
                 this.uiservice.loadingStateChanged.next(false);
                 this.availableExercises = availableExercises;
                 this.trainingsChanged.next([...this.availableExercises]);  // ... as a copy of array
         }
-        // , error => {
-        //         console.log(error);
-        //     }
+        , error => {
+                this.uiservice.loadingStateChanged.next(false);
+                this.uiservice.showSnackBar('Fetching failed, please try later...');
+                this.trainingsChanged.next(null);
+            }
         ));
     }
 
