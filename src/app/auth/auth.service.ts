@@ -4,8 +4,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {TrainingService} from '../training/training.service';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import {SnackbarComponent} from '../snackbar.component';
+import {MatSnackBar} from '@angular/material';
 import {UiService} from '../shared/ui.service';
 
 @Injectable()
@@ -27,7 +26,7 @@ export class AuthService {
         this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
                 this.uiService.loadingStateChanged.next(false);
-                console.log(result);
+                sessionStorage.setItem('userId', result.user.uid);
             })
             .catch(error => {
                 this.uiService.loadingStateChanged.next(false);
@@ -64,28 +63,13 @@ export class AuthService {
         // };
         this.afAuth.auth.signInWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
+                sessionStorage.setItem('userId', result.user.uid);
                 this.uiService.loadingStateChanged.next(false);
             })
             .catch(error => {
                 this.uiService.loadingStateChanged.next(false);
-                // this.snackBar.open(error.message, 'CLOSE', {
-                //   duration: 5000,
-                //   verticalPosition: 'top',
-                //   horizontalPosition: 'center',
-                //   panelClass: 'background-red'
-                // });
                 this.uiService.showSnackBar(error);
-            //     this.snackBar.openFromComponent(SnackbarComponent, {
-            //         duration: 5000,
-            //         horizontalPosition: 'center',
-            //         verticalPosition: 'top',
-            //         panelClass: 'background-red',
-            //         data: {
-            //             error: error,
-            //         }
-            //     });
-            //
-             });
+            });
     }
 
     logout() {
@@ -106,4 +90,6 @@ export class AuthService {
     //     this.authChange.next(true);
     //     this.router.navigate(['training']);
     // }
+
+
 }
