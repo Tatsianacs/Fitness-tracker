@@ -25,6 +25,7 @@ import {environment} from '../environments/environment';
 import {AngularFirestore, AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {SnackbarComponent} from './snackbar.component';
+import {UiService} from './shared/ui.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import {SnackbarComponent} from './snackbar.component';
     AngularFirestoreModule,
     AngularFireAuthModule
   ],
-  providers: [AuthService, TrainingService],
+  providers: [AuthService, TrainingService, UiService],
   bootstrap: [AppComponent],
   entryComponents: [StopTrainingComponent, SnackbarComponent]
 })

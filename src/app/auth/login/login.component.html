@@ -9,5 +9,6 @@
     <input type="text" matInput placeholder="Your password" formControlName="password">
     <mat-error *ngIf="!loginForm.get('password').valid">Password is invalid</mat-error>
   </mat-form-field>
-  <button type="submit" mat-raised-button color="primary" [disabled]="!loginForm.valid">Submit</button>
+  <button type="submit" *ngIf="!isLoading" mat-raised-button color="primary" [disabled]="!loginForm.valid">Submit</button>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
 </form>

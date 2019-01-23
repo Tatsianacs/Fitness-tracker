@@ -3,6 +3,7 @@ import {Subject, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {UiService} from '../shared/ui.service';
 
 @Injectable()
 export class TrainingService {
@@ -17,7 +18,7 @@ export class TrainingService {
     finishedExercisesCHanged = new Subject<Training[]>();
     private fbSubs: Subscription[] = [];
 
-    constructor(private db: AngularFirestore) {}
+    constructor(private db: AngularFirestore, private uiservice: UiService) {}
 
     startExercise(selectedId: string) {
         this.db.doc('availableExcercises/' + selectedId).update({lastSelected: new Date()});
@@ -53,6 +54,7 @@ export class TrainingService {
 
 
     fetchExercises() {
+        this.uiservice.loadingStateChanged.next(true);
         this.fbSubs.push(this.db.collection('availableExcercises').snapshotChanges()  // with shapshot we get both id and values (via payload)
             .pipe(map(docArray => { // allow us to get server data in format we expect
                 return docArray.map(doc => {
@@ -65,6 +67,7 @@ export class TrainingService {
                 });
             }))
             .subscribe((availableExercises: Training[]) => {
+                this.uiservice.loadingStateChanged.next(false);
                 this.availableExercises = availableExercises;
                 this.trainingsChanged.next([...this.availableExercises]);  // ... as a copy of array
         }
