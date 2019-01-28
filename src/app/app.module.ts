@@ -20,6 +20,8 @@ import {SnackbarComponent} from './snackbar.component';
 import {UiService} from './shared/ui.service';
 import {TrainingModule} from './training/training.module';
 import {AuthModule} from './auth/auth.module';
+import {StoreModule} from '@ngrx/store';
+import {appReducer} from './app.reducer';
 
 @NgModule({
     declarations: [
@@ -37,7 +39,10 @@ import {AuthModule} from './auth/auth.module';
         FlexLayoutModule,
         AngularFireModule.initializeApp(environment.firebase),
         AuthModule,
-        AngularFirestoreModule
+        AngularFirestoreModule,
+        StoreModule.forRoot({
+            ui: appReducer
+        })
     ],
     providers: [AuthService, TrainingService, UiService],
     bootstrap: [AppComponent],
